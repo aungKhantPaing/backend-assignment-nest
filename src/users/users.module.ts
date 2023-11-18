@@ -11,12 +11,14 @@ import {
   PurchasedItem,
   PurchasedItemSchema,
 } from 'src/schemas/purchased-item.schema';
+import { Coupon, CouponSchema } from 'src/schemas/coupon.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: PurchasedItem.name, schema: PurchasedItemSchema },
+      { name: Coupon.name, schema: CouponSchema },
     ]),
     CacheModule.register<RedisClientOptions>({
       store: redisStore,

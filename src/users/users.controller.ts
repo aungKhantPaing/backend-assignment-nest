@@ -9,6 +9,7 @@ import {
   Request,
   Inject,
   UseInterceptors,
+  Post,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,6 +19,8 @@ import QRCode from 'qrcode';
 import { PurchasedItemDocument } from 'src/schemas/purchased-item.schema';
 import { CACHE_MANAGER, CacheInterceptor } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { CouponDocument } from 'src/schemas/coupon.schema';
+import { ExchangePointsDto } from './dto/exchange-points.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -46,6 +49,26 @@ export class UsersController {
   @Get('total-points')
   getTotalPoints(@Request() req): Promise<number> {
     return this.usersService.getTotalPoints(req.user._id);
+  }
+
+  @Post('exchange-points')
+  exchangePoints(
+    @Request() req,
+    @Body() exchangePointsDto: ExchangePointsDto,
+  ): Promise<CouponDocument> {
+    return this.usersService.exchangePoints(
+      req.user._id,
+      exchangePointsDto.points,
+    );
+  }
+
+  @Get('coupons')
+  async getCoupons(@Request() req) {
+    const coupons = await this.usersService.getCoupons(req.user._id);
+    return {
+      coupons,
+      quantity: coupons.length,
+    };
   }
 
   @Patch(':id')
