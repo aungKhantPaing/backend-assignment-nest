@@ -1,14 +1,12 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { AddPointDto } from './dto/add-point.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { User } from 'src/schemas/user.schema';
 import { CalculatePointDto } from './dto/calculate-point.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Processor('point')
 export class PointProcessor {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(private userService: UsersService) {}
 
   @Process('calculate-point')
   async calculatePoint(job: Job<CalculatePointDto>) {
@@ -32,14 +30,9 @@ export class PointProcessor {
 
   @Process('add-point')
   async addPoint(job: Job<AddPointDto>) {
-    const updateResult = await this.userModel.updateOne(
-      { _id: new Types.ObjectId(job.data.memberCode) },
-      {
-        $inc: {
-          points: job.data.points,
-        },
-      },
-      { new: true },
+    const updateResult = await this.userService.addPoint(
+      job.data.memberCode,
+      job.data.points,
     );
     return updateResult;
   }
