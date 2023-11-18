@@ -6,6 +6,8 @@ import { UsersModule } from './users/users.module';
 import { PointsModule } from './points/points.module';
 import { BullModule } from '@nestjs/bull';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { LocalAPIKeyAuthGuard } from './auth/localapikey-auth.guard';
 
 @Module({
   imports: [
@@ -21,6 +23,12 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: LocalAPIKeyAuthGuard,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

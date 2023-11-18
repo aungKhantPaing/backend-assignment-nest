@@ -1,3 +1,4 @@
+// TODO: Use environment keys
 export const jwtConstants = {
   secret: 'iBs9mVomlFCTOY0k2bWp4q',
   refreshSecret:
