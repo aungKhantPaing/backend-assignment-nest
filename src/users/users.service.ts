@@ -71,7 +71,7 @@ export class UsersService {
   async exchangePoints(id: string, points: number) {
     const user = await this.userModel.findById(new mongoose.Types.ObjectId(id));
     if (user.points >= points) {
-      const pointsToExchange = points % 5;
+      const pointsToExchange = points - (points % 5); // $5, $10, $15, ..., $50 coupons
       const createdCoupon = await this.couponModel.create({
         userId: user._id,
         discountPrice: pointsToExchange / 10,
