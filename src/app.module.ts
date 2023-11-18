@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { ItemsModule } from './items/items.module';
 import { PointsModule } from './points/points.module';
 import { BullModule } from '@nestjs/bull';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { BullModule } from '@nestjs/bull';
     UsersModule,
     ItemsModule,
     PointsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

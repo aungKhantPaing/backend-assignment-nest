@@ -18,8 +18,8 @@ export class UsersService {
     return this.userModel.find().exec();
   }
 
-  findOne(id: string) {
-    return this.userModel.findById(new Types.ObjectId(id)).exec();
+  findOne(filter) {
+    return this.userModel.findOne(filter).exec();
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

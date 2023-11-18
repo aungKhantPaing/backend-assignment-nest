@@ -8,7 +8,7 @@ export class User {
   @Prop({ required: true, unique: true })
   phoneNumber: string;
 
-  @Prop()
+  @Prop({ default: () => Math.floor(100000 + Math.random() * 900000) })
   otpCode: string;
 
   @Prop({ default: 0 })
@@ -19,6 +19,9 @@ export class User {
 
   @Prop()
   availableCoupons: Array<any>;
+
+  @Prop()
+  verified: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
