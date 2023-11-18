@@ -9,7 +9,13 @@ import { Model, Types } from 'mongoose';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
+    const existingUser = await this.userModel.findOne({
+      phoneNumber: createUserDto.phoneNumber,
+    });
+    if (existingUser) {
+      existingUser;
+    }
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }

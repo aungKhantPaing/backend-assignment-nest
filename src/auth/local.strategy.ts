@@ -9,7 +9,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({ usernameField: 'deviceid', passwordField: 'deviceid' });
   }
 
-  async validate(phoneNumber: string, otpCode: string): Promise<any> {
+  async validate(phoneNumber: string, otpCode: string) {
     Logger.log('LocalStrategy.validate()', { phoneNumber, otpCode });
 
     const user = await this.authService.validateUser(phoneNumber, otpCode);

@@ -16,16 +16,15 @@ export class AuthService {
     return isDeepStrictEqual(apikey, API_KEY);
   }
 
-  async validateUser(phoneNumber: string, otpCode: string): Promise<any> {
+  async validateUser(
+    phoneNumber: string,
+    otpCode: string,
+  ): Promise<UserDocument> {
     const user = await this.usersService.findOne({
       phoneNumber: phoneNumber,
       otpCode: otpCode,
     });
-    if (user) {
-      return user;
-    }
-    const newUser = await this.usersService.create({ phoneNumber });
-    return newUser;
+    return user;
   }
 
   // async validateUser(deviceId: string): Promise<any> {
@@ -43,6 +42,7 @@ export class AuthService {
   async login(user: UserDocument) {
     const payload = { sub: user._id.toString(), phoneNumber: user.phoneNumber };
     return {
+      createdAt: new Date(),
       access_token: this.jwtService.sign(payload),
       refresh_token: this.jwtService.sign(payload, {
         secret: jwtConstants.refreshSecret,
@@ -54,7 +54,12 @@ export class AuthService {
   async refreshToken(user: UserDocument) {
     const payload = { sub: user._id.toString(), phoneNumber: user.phoneNumber };
     return {
+      createdAt: new Date(),
       access_token: this.jwtService.sign(payload),
+      refresh_token: this.jwtService.sign(payload, {
+        secret: jwtConstants.refreshSecret,
+        expiresIn: '30d',
+      }),
     };
   }
 
