@@ -13,15 +13,6 @@ export class User {
 
   @Prop({ default: 0 })
   points: number;
-
-  @Prop()
-  purchaseHistory: Array<any>;
-
-  @Prop()
-  availableCoupons: Array<any>;
-
-  @Prop()
-  verified: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
